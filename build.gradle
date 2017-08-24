@@ -82,7 +82,7 @@ task helloWorldClient(type: CreateStartScripts) {
 
 task helloWorldAutenticao(type: CreateStartScripts) {
     mainClassName = 'br.com.diegosilva.grpc.hello.AutenticacaoCliente'
-    applicationName = 'hello-world-client'
+    applicationName = 'autenticacao-cliente'
     outputDir = new File(project.buildDir, 'tmp')
     classpath = jar.outputs.files + project.configurations.runtime
 }

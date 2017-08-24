@@ -84,6 +84,9 @@ public class HelloWorldServer {
         response.setMessage("Usuário autenticado");
       }
 
+      responseObserver.onNext(response.build());
+      responseObserver.onCompleted();
+
     }
   }
 }
