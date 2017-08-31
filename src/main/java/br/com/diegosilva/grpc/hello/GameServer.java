@@ -84,7 +84,7 @@ public class GameServer {
 
     @Override
     public void listarUsuarios(Usuario request, StreamObserver<Usuario> responseObserver) {
-      
+
     }
   }
 }
