@@ -21,17 +21,6 @@ option objc_class_prefix = "HLW";
 
 package helloworld;
 
-service Greeter {
-  rpc SayHello (HelloRequest) returns (HelloReply) {}
-}
-message HelloRequest {
-  string name = 1;
-}
-
-message HelloReply {
-  string message = 1;
-}
-
 //Servico para autenticacao
 service Autenticacao {
   rpc Autenticar (AutenticacaoRequest) returns (AutenticacaoResponse) {}
@@ -44,6 +33,15 @@ message AutenticacaoRequest {
 message AutenticacaoResponse {
   string message = 1;
   int32 codigo = 2;
+}
+
+//Servico para usuarios
+service Usuarios {
+  rpc ListarUsuarios(Usuario) returns (stream Usuario) {}
+}
+
+message Usuario{
+  string nome = 1;
 }
 
 

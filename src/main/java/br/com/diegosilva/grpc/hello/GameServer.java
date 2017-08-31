@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 
-public class HelloWorldServer {
-  private static final Logger logger = Logger.getLogger(HelloWorldServer.class.getName());
+public class GameServer {
+  private static final Logger logger = Logger.getLogger(GameServer.class.getName());
 
   private Server server;
 
@@ -23,7 +23,6 @@ public class HelloWorldServer {
     int port = 50051;
 
     server = ServerBuilder.forPort(port)
-        .addService(new GreeterImpl())
             .addService(new AutenticacaoImpl())
         .build()
         .start();
@@ -33,7 +32,7 @@ public class HelloWorldServer {
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       // Use stderr here since the logger may have been reset by its JVM shutdown hook.
       System.err.println("*** shutting down gRPC server since JVM is shutting down");
-      HelloWorldServer.this.stop();
+      GameServer.this.stop();
       System.err.println("*** server shut down");
     }));
   }
@@ -51,20 +50,11 @@ public class HelloWorldServer {
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
-    final HelloWorldServer server = new HelloWorldServer();
+    final GameServer server = new GameServer();
     server.start();
     server.blockUntilShutdown();
   }
 
-  static class GreeterImpl extends GreeterGrpc.GreeterImplBase {
-
-    @Override
-    public void sayHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
-      HelloReply reply = HelloReply.newBuilder().setMessage("Hello " + req.getName()).build();
-      responseObserver.onNext(reply);
-      responseObserver.onCompleted();
-    }
-  }
 
   static class AutenticacaoImpl
           extends AutenticacaoGrpc.AutenticacaoImplBase {
@@ -87,6 +77,14 @@ public class HelloWorldServer {
       responseObserver.onNext(response.build());
       responseObserver.onCompleted();
 
+    }
+  }
+
+  static class UsuarioServiceImpl extends UsuariosGrpc.UsuariosImplBase{
+
+    @Override
+    public void listarUsuarios(Usuario request, StreamObserver<Usuario> responseObserver) {
+      
     }
   }
 }
