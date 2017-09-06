@@ -28,7 +28,7 @@ public class HelloWorldServer {
         .build()
         .start();
 
-    logger.info("Server started, listening on " + port);
+    logger.info("Servidor Iniciado, escutando na porta " + port);
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       // Use stderr here since the logger may have been reset by its JVM shutdown hook.
