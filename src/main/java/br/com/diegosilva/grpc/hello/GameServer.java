@@ -4,15 +4,17 @@ package br.com.diegosilva.grpc.hello;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
+import io.reactivex.*;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.subjects.PublishSubject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 
@@ -22,11 +24,7 @@ public class GameServer {
   private Server server;
 
   private static List<String> usuariosAutenticados = new ArrayList<>();
-  private static Flowable<String> usuariosAdicionadosFlowable = Flowable.create(subscriber->{
-    for (String usuario : usuariosAutenticados) {
-      subscriber.onNext(usuario);
-    }
-  }, BackpressureStrategy.MISSING);
+  private static PublishSubject<String> usuariosAutenticadosPublisher = PublishSubject.create();
 
   private void start() throws IOException {
 
@@ -82,8 +80,7 @@ public class GameServer {
       }else{//retorna sucesso e adiciona o usuario
         usuariosAutenticados.add(request.getUsuario());
 
-       // usuariosAdicionadosFlowable.publish().onN
-
+        usuariosAutenticadosPublisher.onNext(request.getUsuario());
 
         response.setCodigo(0);
         response.setMessage("Usuário autenticado");
@@ -100,17 +97,28 @@ public class GameServer {
     @Override
     public void listarUsuarios(Usuario request, StreamObserver<Usuario> responseObserver) {
 
-      Iterator<String> it = usuariosAutenticados.iterator();
-
-      usuariosAdicionadosFlowable.subscribe(new Consumer<String>() {
+      Observable.fromIterable(usuariosAutenticados)
+              .filter(new Predicate<String>() {
         @Override
-        public void accept(String nomeUsuario) throws Exception {
-            responseObserver.onNext(Usuario.newBuilder().setNome(nomeUsuario).build());
+        public boolean test(String s) throws Exception {
+          return !s.equals(request.getNome());
         }
-      }, new Consumer<Throwable>() {
+      }).concatMap(new Function<String, ObservableSource<String>>() {
         @Override
-        public void accept(Throwable throwable) throws Exception {
-          responseObserver.onError(throwable);
+        public ObservableSource<String> apply(String s) throws Exception {
+          return Observable.just(s).delay(2, TimeUnit.SECONDS);
+        }
+      }).subscribe(new Consumer<String>() {
+        @Override
+        public void accept(String s) throws Exception {
+          responseObserver.onNext(Usuario.newBuilder().setNome(s).build());
+        }
+      });
+
+      usuariosAutenticadosPublisher.subscribe(new Consumer<String>() {
+        @Override
+        public void accept(String s) throws Exception {
+          responseObserver.onNext(Usuario.newBuilder().setNome(s).build());
         }
       });
 
