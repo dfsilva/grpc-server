@@ -4,9 +4,14 @@ package br.com.diegosilva.grpc.hello;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.functions.Consumer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -17,6 +22,11 @@ public class GameServer {
   private Server server;
 
   private static List<String> usuariosAutenticados = new ArrayList<>();
+  private static Flowable<String> usuariosAdicionadosFlowable = Flowable.create(subscriber->{
+    for (String usuario : usuariosAutenticados) {
+      subscriber.onNext(usuario);
+    }
+  }, BackpressureStrategy.MISSING);
 
   private void start() throws IOException {
 
@@ -24,6 +34,7 @@ public class GameServer {
 
     server = ServerBuilder.forPort(port)
             .addService(new AutenticacaoImpl())
+            .addService(new UsuarioServiceImpl())
         .build()
         .start();
 
@@ -70,6 +81,10 @@ public class GameServer {
         response.setMessage("Já existe um usuário autenticado com este login");
       }else{//retorna sucesso e adiciona o usuario
         usuariosAutenticados.add(request.getUsuario());
+
+       // usuariosAdicionadosFlowable.publish().onN
+
+
         response.setCodigo(0);
         response.setMessage("Usuário autenticado");
       }
@@ -84,6 +99,20 @@ public class GameServer {
 
     @Override
     public void listarUsuarios(Usuario request, StreamObserver<Usuario> responseObserver) {
+
+      Iterator<String> it = usuariosAutenticados.iterator();
+
+      usuariosAdicionadosFlowable.subscribe(new Consumer<String>() {
+        @Override
+        public void accept(String nomeUsuario) throws Exception {
+            responseObserver.onNext(Usuario.newBuilder().setNome(nomeUsuario).build());
+        }
+      }, new Consumer<Throwable>() {
+        @Override
+        public void accept(Throwable throwable) throws Exception {
+          responseObserver.onError(throwable);
+        }
+      });
 
     }
   }
