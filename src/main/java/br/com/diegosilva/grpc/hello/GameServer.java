@@ -21,14 +21,18 @@ import java.util.logging.Logger;
 public class GameServer {
   private static final Logger logger = Logger.getLogger(GameServer.class.getName());
 
+  private static class OperacoesUsuario{
+    public static final int INCLUSAO = 0;
+    public static final int EXCLUCAO = 1;
+  }
+
   private Server server;
 
   private static List<String> usuariosAutenticados = new ArrayList<>();
-  private static PublishSubject<String> usuariosAutenticadosPublisher = PublishSubject.create();
+  private static PublishSubject<Usuario> usuariosAutenticadosPublisher = PublishSubject.create();
+  private static final int port  = 50051;
 
   private void start() throws IOException {
-
-    int port = 50051;
 
     server = ServerBuilder.forPort(port)
             .addService(new AutenticacaoImpl())
@@ -79,7 +83,9 @@ public class GameServer {
       }else{//retorna sucesso e adiciona o usuario
         usuariosAutenticados.add(request.getUsuario());
 
-        usuariosAutenticadosPublisher.onNext(request.getUsuario());
+
+        usuariosAutenticadosPublisher.onNext(Usuario.newBuilder().setOp(OperacoesUsuario.INCLUSAO)
+                .setNome(request.getUsuario()).build());
 
         response.setCodigo(0);
         response.setMessage("Usuário autenticado");
@@ -114,13 +120,19 @@ public class GameServer {
         }
       });
 
-      usuariosAutenticadosPublisher.subscribe(new Consumer<String>() {
+      usuariosAutenticadosPublisher.subscribe(new Consumer<Usuario>() {
         @Override
-        public void accept(String s) throws Exception {
-          responseObserver.onNext(Usuario.newBuilder().setNome(s).build());
+        public void accept(Usuario usuario) throws Exception {
+          responseObserver.onNext(usuario);
         }
       });
+    }
 
+    @Override
+    public void sair(SairRequest request, StreamObserver<SairResponse> responseObserver) {
+      usuariosAutenticados.remove(request.getNome());
+      usuariosAutenticadosPublisher.onNext(Usuario.newBuilder().setOp(OperacoesUsuario.EXCLUCAO)
+              .setNome(request.getNome()).build());
     }
   }
 }

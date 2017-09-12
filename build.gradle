@@ -22,7 +22,6 @@ repositories {
 
 def grpcVersion = '1.6.1'
 
-
 dependencies {
     compile "com.google.api.grpc:proto-google-common-protos:0.1.16"
     compile "io.grpc:grpc-netty:${grpcVersion}"
@@ -68,31 +67,15 @@ apply plugin: 'application'
 
 startScripts.enabled = false
 
-task helloWorldServer(type: CreateStartScripts) {
-    mainClassName = 'br.com.diegosilva.grpc.hello.HelloWorldServer'
-    applicationName = 'hello-world-server'
-    outputDir = new File(project.buildDir, 'tmp')
-    classpath = jar.outputs.files + project.configurations.runtime
-}
-
-task helloWorldClient(type: CreateStartScripts) {
-    mainClassName = 'br.com.diegosilva.grpc.hello.HelloWorldClient'
-    applicationName = 'hello-world-client'
-    outputDir = new File(project.buildDir, 'tmp')
-    classpath = jar.outputs.files + project.configurations.runtime
-}
-
-task helloWorldAutenticao(type: CreateStartScripts) {
-    mainClassName = 'br.com.diegosilva.grpc.hello.AutenticacaoCliente'
-    applicationName = 'autenticacao-cliente'
+task gameServer(type: CreateStartScripts) {
+    mainClassName = 'br.com.diegosilva.grpc.hello.GameServer'
+    applicationName = 'grpc-server'
     outputDir = new File(project.buildDir, 'tmp')
     classpath = jar.outputs.files + project.configurations.runtime
 }
 
 applicationDistribution.into('bin') {
-    from(helloWorldServer)
-    from(helloWorldClient)
-    from(helloWorldAutenticao)
+    from(gameServer)
     fileMode = 0755
 }
 

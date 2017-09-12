@@ -11,4 +11,12 @@
 3 - Em outro console execute
 
 `$ ./build/install/grpc-server/bin/hello-world-client`
+
+Iniciar utilizando docker
+
+`$ docker run \
+     --name grpc-server \
+     -p 9280:50051 \
+     -d \
+     diegosiuniube/grpc-server:1.0`
  

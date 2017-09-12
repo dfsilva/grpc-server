@@ -24,11 +24,18 @@ message AutenticacaoResponse {
 //Servico para usuarios
 service Usuarios {
   rpc ListarUsuarios(Usuario) returns (stream Usuario) {}
+  rpc Sair (SairRequest) returns (SairResponse) {}
 }
 
 message Usuario{
   string nome = 1;
+  int32 op = 2;
 }
+
+message SairRequest{
+  string nome = 1;
+}
+message SairResponse{}
 
 
 
