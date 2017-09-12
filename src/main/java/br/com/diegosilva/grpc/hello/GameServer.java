@@ -64,7 +64,6 @@ public class GameServer {
     server.blockUntilShutdown();
   }
 
-
   static class AutenticacaoImpl
           extends AutenticacaoGrpc.AutenticacaoImplBase {
 
@@ -106,7 +105,7 @@ public class GameServer {
       }).concatMap(new Function<String, ObservableSource<String>>() {
         @Override
         public ObservableSource<String> apply(String s) throws Exception {
-          return Observable.just(s).delay(2, TimeUnit.SECONDS);
+          return Observable.just(s).delay(1, TimeUnit.SECONDS);
         }
       }).subscribe(new Consumer<String>() {
         @Override
