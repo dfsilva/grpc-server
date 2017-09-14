@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 
 public class GameServer {
+
   private static final Logger logger = Logger.getLogger(GameServer.class.getName());
 
   private static class OperacoesUsuario{
@@ -29,7 +30,8 @@ public class GameServer {
   private Server server;
 
   private static List<String> usuariosAutenticados = new ArrayList<>();
-  private static PublishSubject<Usuario> usuariosAutenticadosPublisher = PublishSubject.create();
+  private static PublishSubject<Usuario> usuariosAutenticadosPublisher
+          = PublishSubject.create();
   private static final int port  = 50051;
 
   private void start() throws IOException {
@@ -40,7 +42,7 @@ public class GameServer {
         .build()
         .start();
 
-    logger.info("Server started, listening on " + port);
+    logger.info("Servidor iniciado, escutando na porta " + port);
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       // Use stderr here since the logger may have been reset by its JVM shutdown hook.
@@ -68,9 +70,11 @@ public class GameServer {
     server.blockUntilShutdown();
   }
 
+
   static class AutenticacaoImpl
           extends AutenticacaoGrpc.AutenticacaoImplBase {
 
+    @Override
     public void autenticar(AutenticacaoRequest request,
                            StreamObserver<AutenticacaoResponse> responseObserver) {
 
@@ -84,7 +88,8 @@ public class GameServer {
         usuariosAutenticados.add(request.getUsuario());
 
 
-        usuariosAutenticadosPublisher.onNext(Usuario.newBuilder().setOp(OperacoesUsuario.INCLUSAO)
+        usuariosAutenticadosPublisher
+                .onNext(Usuario.newBuilder().setOp(OperacoesUsuario.INCLUSAO)
                 .setNome(request.getUsuario()).build());
 
         response.setCodigo(0);
@@ -96,6 +101,7 @@ public class GameServer {
 
     }
   }
+
 
   static class UsuarioServiceImpl extends UsuariosGrpc.UsuariosImplBase{
 
