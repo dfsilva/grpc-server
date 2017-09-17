@@ -16,7 +16,7 @@ Iniciar utilizando docker
 
 `$ docker run \
      --name grpc-server \
-     -p 9280:50051 \
+     -p 50001:50051 \
      -d \
      diegosiuniube/grpc-server:1.0`
  
