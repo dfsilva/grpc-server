@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7a9d37f2-7342-4cae-a7f5-59f3323a3984" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/br/com/diegosilva/grpc/hello/GameServer.java" afterPath="$PROJECT_DIR$/src/main/java/br/com/diegosilva/grpc/hello/GameServer.java" />
-    </list>
+    <list default="true" id="7a9d37f2-7342-4cae-a7f5-59f3323a3984" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -899,12 +895,12 @@
       <workItem from="1505241224722" duration="364000" />
       <workItem from="1505343824088" duration="2522000" />
       <workItem from="1505650562416" duration="548000" />
-      <workItem from="1505651232036" duration="1681000" />
+      <workItem from="1505651232036" duration="2140000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40196000" />
+    <option name="totallyTimeSpent" value="40655000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
