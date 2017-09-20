@@ -4,6 +4,7 @@ gradle.properties
 .gradle
 local.properties
 out
+
 # Maven (examples)
 target
 
