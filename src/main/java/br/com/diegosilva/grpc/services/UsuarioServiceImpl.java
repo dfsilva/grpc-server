@@ -1,18 +1,10 @@
 package br.com.diegosilva.grpc.services;
 
-import br.com.diegosilva.grpc.Main;
 import br.com.diegosilva.grpc.hello.SairRequest;
 import br.com.diegosilva.grpc.hello.SairResponse;
 import br.com.diegosilva.grpc.hello.Usuario;
 import br.com.diegosilva.grpc.hello.UsuariosGrpc;
 import io.grpc.stub.StreamObserver;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
-
-import java.util.concurrent.TimeUnit;
 
 public class UsuarioServiceImpl extends UsuariosGrpc.UsuariosImplBase {
 
@@ -48,7 +40,7 @@ public class UsuarioServiceImpl extends UsuariosGrpc.UsuariosImplBase {
     @Override
     public void sair(SairRequest request, StreamObserver<SairResponse> responseObserver) {
         //usuariosAutenticados.remove(request.getNome());
-       //        usuariosAutenticadosPublisher.onNext(Usuario.newBuilder().setOp(Main.OperacoesUsuario.EXCLUCAO)
-       //                .setNome(request.getNome()).build());
+        //        usuariosAutenticadosPublisher.onNext(Usuario.newBuilder().setOp(Main.OperacoesUsuario.EXCLUCAO)
+        //                .setNome(request.getNome()).build());
     }
 }
