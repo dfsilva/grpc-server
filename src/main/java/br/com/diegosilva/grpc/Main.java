@@ -1,8 +1,12 @@
 package br.com.diegosilva.grpc;
 
 import akka.actor.ActorSystem;
+import akka.actor.PoisonPill;
 import akka.actor.Props;
+import akka.cluster.singleton.ClusterSingletonManager;
+import akka.cluster.singleton.ClusterSingletonManagerSettings;
 import br.com.diegosilva.grpc.actors.AutenticacaoActor;
+import br.com.diegosilva.grpc.actors.SingletonActor;
 import br.com.diegosilva.grpc.hello.Usuario;
 import br.com.diegosilva.grpc.services.AutenticacaoImpl;
 import br.com.diegosilva.grpc.services.UsuarioServiceImpl;
@@ -20,7 +24,7 @@ public class Main {
 
     private static final Logger logger = Logger.getLogger(Main.class.getName());
 
-    private static class OperacoesUsuario {
+    public static class OperacoesUsuario {
         public static final int INCLUSAO = 0;
         public static final int EXCLUCAO = 1;
     }
@@ -35,17 +39,24 @@ public class Main {
 
     private void start() throws IOException {
 
+        Config config = ConfigFactory.load();
 
-        Config config = ConfigFactory.parseString(
-                "akka.remote.netty.tcp.port=" + 2552).withFallback(
-                ConfigFactory.load());
         ActorSystem system = ActorSystem.create("ClusterSystem", config);
 
-        AutenticacaoActor.getActorRef(system);
+
+        final ClusterSingletonManagerSettings settings =
+                ClusterSingletonManagerSettings.create(system);
+
+        system.actorOf(
+                ClusterSingletonManager.props(
+                        Props.create(SingletonActor.class),
+                        PoisonPill.getInstance(),
+                        settings),"master");
+
 
         server = ServerBuilder.forPort(port)
                 .addService(new AutenticacaoImpl(system))
-                .addService(new UsuarioServiceImpl())
+                .addService(new UsuarioServiceImpl(system))
                 .build()
                 .start();
 

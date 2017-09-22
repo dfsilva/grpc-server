@@ -1,23 +1,19 @@
 package br.com.diegosilva.grpc.actors;
 
-import akka.actor.*;
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
 import akka.cluster.singleton.ClusterSingletonProxy;
 import akka.cluster.singleton.ClusterSingletonProxySettings;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import br.com.diegosilva.grpc.Main;
-import br.com.diegosilva.grpc.hello.AutenticacaoRequest;
 import br.com.diegosilva.grpc.hello.AutenticacaoResponse;
-import br.com.diegosilva.grpc.hello.Usuario;
-import br.com.diegosilva.grpc.services.AutenticacaoImpl;
-import io.grpc.stub.StreamObserver;
 import redis.clients.jedis.Jedis;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-public class AutenticacaoActor extends AbstractActor {
+public class UsuariosActor extends AbstractActor {
 
     private final LoggingAdapter LOG = Logging.getLogger(getContext().system(), this);
     private Jedis jedis;
@@ -36,8 +32,6 @@ public class AutenticacaoActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder().match(Login.class, lc -> {
             realizarLogin(lc);
-        }).match(Logoff.class, v->{
-            realizarLogoff(v);
         }).build();
     }
 
@@ -56,21 +50,17 @@ public class AutenticacaoActor extends AbstractActor {
             sender().tell(response.build(), getSelf());
         } else {//retorna sucesso e adiciona o usuario
             jedis.sadd("usuarios", login.nome);
-            jedis.publish("usuario_entrou", Usuario.newBuilder().setOp(Main.OperacoesUsuario.INCLUSAO)
-                                            .setNome(login.nome).build().toByteString().toStringUtf8());
 
-           // singleton.tell(new SingletonActor.Adicionar(), getSelf());
+          //  usuariosAutenticadosPublisher
+//                                    .onNext(Usuario.newBuilder().setOp(Main.OperacoesUsuario.INCLUSAO)
+//                                            .setNome(request.getUsuario()).build());
+
+            singleton.tell(new SingletonActor.Adicionar(), getSelf());
 
             response.setCodigo(0);
             response.setMessage("Usuário autenticado");
             sender().tell(response.build(), getSelf());
         }
-    }
-
-    private void realizarLogoff(Logoff logoff){
-        jedis.srem("usuarios", logoff.nome);
-        jedis.publish("usuario_entrou", Usuario.newBuilder().setOp(Main.OperacoesUsuario.EXCLUCAO)
-                .setNome(logoff.nome).build().toByteString().toStringUtf8());
     }
 
     public static class Login implements Serializable {
@@ -80,15 +70,8 @@ public class AutenticacaoActor extends AbstractActor {
         }
     }
 
-    public static class Logoff implements Serializable {
-        final String nome;
-        public Logoff(String nome) {
-            this.nome = nome;
-        }
-    }
-
     public static ActorRef getActorRef(ActorSystem system) {
-        return system.actorOf(Props.create(AutenticacaoActor.class));
+        return system.actorOf(Props.create(UsuariosActor.class));
     }
 
 }

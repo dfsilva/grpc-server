@@ -15,8 +15,17 @@
 Iniciar utilizando docker
 
 `$ docker run \
+    --name redis \
+    -v /Users/diego/data/redis-data:/data \
+    -p 6379:6379 \
+    -d \
+    redis  
+`
+
+`$ docker run \
      --name grpc-server \
      -p 50001:50051 \
      -d \
      diegosiuniube/grpc-server:1.0`
+     
  
