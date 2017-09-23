@@ -70,14 +70,4 @@ public class UsuarioServiceImpl extends UsuariosGrpc.UsuariosImplBase {
             }
         },"usuario_entrou");
     }
-
-    @Override
-    public void sair(SairRequest request, StreamObserver<SairResponse> responseObserver) {
-        ActorRef authActor = AutenticacaoActor.getActorRef(system);
-        ask(authActor, new AutenticacaoActor.Logoff(request.getNome()),new Timeout(Duration.create(5, TimeUnit.SECONDS))).thenApplyAsync(o -> {
-            responseObserver.onNext((SairResponse) o);
-            responseObserver.onCompleted();
-            return o;
-        });
-    }
 }

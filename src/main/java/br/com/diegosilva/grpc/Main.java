@@ -53,9 +53,8 @@ public class Main {
                         PoisonPill.getInstance(),
                         settings),"master");
 
-
         server = ServerBuilder.forPort(port)
-                .addService(new AutenticacaoImpl(system))
+                .addService(new AutenticacaoImpl(system, AutenticacaoActor.getActorRef(system)))
                 .addService(new UsuarioServiceImpl(system))
                 .build()
                 .start();
@@ -63,13 +62,11 @@ public class Main {
         logger.info("Servidor iniciado, escutando na porta " + port);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            // Use stderr here since the logger may have been reset by its JVM shutdown hook.
-            System.err.println("*** shutting down gRPC server since JVM is shutting down");
+            System.err.println("*** Desligando o servidor");
             stop();
-            System.err.println("*** server shut down");
+            System.err.println("*** Servidor desligado");
         }));
     }
-
 
     private void stop() {
         if (server != null) {
@@ -82,7 +79,6 @@ public class Main {
             server.awaitTermination();
         }
     }
-
 
     public static void main(String[] args) throws IOException, InterruptedException {
         final Main server = new Main();

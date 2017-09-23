@@ -10,11 +10,17 @@ package game;
 //Servico para autenticacao
 service Autenticacao {
   rpc Autenticar (AutenticacaoRequest) returns (AutenticacaoResponse) {}
+  rpc Sair (SairRequest) returns (SairResponse) {}
 }
 
 message AutenticacaoRequest {
   string usuario = 1;
 }
+
+message SairRequest{
+  string nome = 1;
+}
+message SairResponse{}
 
 message AutenticacaoResponse {
   string message = 1;
@@ -24,7 +30,6 @@ message AutenticacaoResponse {
 //Servico para usuarios
 service Usuarios {
   rpc ListarUsuarios(Usuario) returns (stream Usuario) {}
-  rpc Sair (SairRequest) returns (SairResponse) {}
 }
 
 message Usuario{
@@ -32,10 +37,6 @@ message Usuario{
   int32 op = 2;
 }
 
-message SairRequest{
-  string nome = 1;
-}
-message SairResponse{}
 
 
 
