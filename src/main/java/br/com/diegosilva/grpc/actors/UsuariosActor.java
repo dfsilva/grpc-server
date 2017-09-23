@@ -24,8 +24,8 @@ public class UsuariosActor extends AbstractActor {
         super.preStart();
         jedis = new Jedis();
 
-        singleton = getContext().actorOf(ClusterSingletonProxy.props("user/master",
-                ClusterSingletonProxySettings.create(getContext().getSystem())));
+//        singleton = getContext().actorOf(ClusterSingletonProxy.props("user/master",
+//                ClusterSingletonProxySettings.create(getContext().getSystem())));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class UsuariosActor extends AbstractActor {
 //                                    .onNext(Usuario.newBuilder().setOp(Main.OperacoesUsuario.INCLUSAO)
 //                                            .setNome(request.getUsuario()).build());
 
-            singleton.tell(new SingletonActor.Adicionar(), getSelf());
+//            singleton.tell(new SingletonActor.Adicionar(), getSelf());
 
             response.setCodigo(0);
             response.setMessage("Usuário autenticado");

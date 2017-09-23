@@ -8,7 +8,7 @@ import akka.cluster.singleton.ClusterSingletonManagerSettings;
 import br.com.diegosilva.grpc.actors.AutenticacaoActor;
 import br.com.diegosilva.grpc.actors.SingletonActor;
 import br.com.diegosilva.grpc.hello.Usuario;
-import br.com.diegosilva.grpc.services.AutenticacaoImpl;
+import br.com.diegosilva.grpc.services.AutenticacaoServiceImpl;
 import br.com.diegosilva.grpc.services.UsuarioServiceImpl;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -44,8 +44,8 @@ public class Main {
         ActorSystem system = ActorSystem.create("ClusterSystem", config);
 
 
-        final ClusterSingletonManagerSettings settings =
-                ClusterSingletonManagerSettings.create(system);
+        ClusterSingletonManagerSettings settings =
+                ClusterSingletonManagerSettings.create(system).withRole("compute");
 
         system.actorOf(
                 ClusterSingletonManager.props(
@@ -54,7 +54,7 @@ public class Main {
                         settings),"master");
 
         server = ServerBuilder.forPort(port)
-                .addService(new AutenticacaoImpl(system, AutenticacaoActor.getActorRef(system)))
+                .addService(new AutenticacaoServiceImpl(system, AutenticacaoActor.getActorRef(system)))
                 .addService(new UsuarioServiceImpl(system))
                 .build()
                 .start();

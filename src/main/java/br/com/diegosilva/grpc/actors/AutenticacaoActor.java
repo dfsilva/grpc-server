@@ -1,21 +1,14 @@
 package br.com.diegosilva.grpc.actors;
 
 import akka.actor.*;
-import akka.cluster.singleton.ClusterSingletonProxy;
-import akka.cluster.singleton.ClusterSingletonProxySettings;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import br.com.diegosilva.grpc.Main;
-import br.com.diegosilva.grpc.hello.AutenticacaoRequest;
 import br.com.diegosilva.grpc.hello.AutenticacaoResponse;
 import br.com.diegosilva.grpc.hello.Usuario;
-import br.com.diegosilva.grpc.services.AutenticacaoImpl;
-import io.grpc.stub.StreamObserver;
 import redis.clients.jedis.Jedis;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AutenticacaoActor extends AbstractActor {
 
@@ -27,9 +20,7 @@ public class AutenticacaoActor extends AbstractActor {
     public void preStart() throws Exception {
         super.preStart();
         jedis = new Jedis();
-
-        singleton = getContext().actorOf(ClusterSingletonProxy.props("user/master",
-                ClusterSingletonProxySettings.create(getContext().getSystem())));
+        singleton = SingletonActor.getActorRef(getContext().system());
     }
 
     @Override
@@ -59,7 +50,7 @@ public class AutenticacaoActor extends AbstractActor {
             jedis.publish("usuario_entrou", Usuario.newBuilder().setOp(Main.OperacoesUsuario.INCLUSAO)
                                             .setNome(login.nome).build().toByteString().toStringUtf8());
 
-           // singleton.tell(new SingletonActor.Adicionar(), getSelf());
+            //singleton.tell(new SingletonActor.Adicionar(), getSelf());
 
             response.setCodigo(0);
             response.setMessage("Usuário autenticado");
