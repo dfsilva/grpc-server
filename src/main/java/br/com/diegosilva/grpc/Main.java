@@ -30,12 +30,7 @@ public class Main {
     }
 
     private Server server;
-
-    private static PublishSubject<Usuario> usuariosAutenticadosPublisher
-            = PublishSubject.create();
-
     private static final int port = 50051;
-
 
     private void start() throws IOException {
 
