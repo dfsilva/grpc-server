@@ -7,6 +7,7 @@ import akka.util.Timeout;
 import br.com.diegosilva.grpc.Main;
 import br.com.diegosilva.grpc.actors.AutenticacaoActor;
 import br.com.diegosilva.grpc.actors.UsuariosActor;
+import br.com.diegosilva.grpc.actors.UsuariosPublisherActor;
 import br.com.diegosilva.grpc.hello.*;
 import io.grpc.stub.StreamObserver;
 import io.reactivex.Observable;
@@ -35,10 +36,11 @@ public class UsuarioServiceImpl extends UsuariosGrpc.UsuariosImplBase {
     @Override
     public void listarUsuarios(Usuario request, StreamObserver<Usuario> responseObserver) {
 
-        ActorRef usuariosActor = system.actorOf(Props.create(UsuariosActor.class, () -> {
-            return new UsuariosActor(responseObserver);
+        ActorRef usuariosPublisherActor = system.actorOf(Props.create(UsuariosPublisherActor.class, () -> {
+            return new UsuariosPublisherActor(responseObserver);
         }), "subscriber_"+request.getNome());
 
+        ActorRef usuariosActor = system.actorOf(Props.create(UsuariosActor.class));
         ask(usuariosActor, new UsuariosActor.ListarUsuarios(request.getNome()),
                 new Timeout(Duration.create(5, TimeUnit.SECONDS))).thenApplyAsync(o -> {
 

@@ -37,6 +37,7 @@ dependencies {
     compile "com.typesafe.akka:akka-cluster_2.12:${akkaVersion}"
     compile "com.typesafe.akka:akka-cluster-metrics_2.12:${akkaVersion}"
     compile "com.typesafe.akka:akka-cluster-tools_2.12:${akkaVersion}"
+    compile "com.typesafe.akka:akka-distributed-data_2.12:${akkaVersion}"
 
     compile 'io.reactivex.rxjava2:rxjava:2.1.2'
 

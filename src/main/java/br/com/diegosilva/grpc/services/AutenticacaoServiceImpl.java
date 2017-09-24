@@ -30,11 +30,10 @@ public class AutenticacaoServiceImpl
     public void autenticar(AutenticacaoRequest request,
                            StreamObserver<AutenticacaoResponse> responseObserver) {
 
-
-        logger.info("Vai levantar o ator subscriber");
-
         ask(authActor, new AutenticacaoActor.Login(request.getUsuario()),
                 new Timeout(Duration.create(5, TimeUnit.SECONDS))).thenApplyAsync(o -> {
+
+                    logger.info("Retorno do servico: "+o);
             responseObserver.onNext((AutenticacaoResponse)o);
             responseObserver.onCompleted();
             return o;
