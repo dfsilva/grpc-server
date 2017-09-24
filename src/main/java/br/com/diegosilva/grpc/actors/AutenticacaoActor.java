@@ -1,6 +1,8 @@
 package br.com.diegosilva.grpc.actors;
 
 import akka.actor.*;
+import akka.cluster.pubsub.DistributedPubSub;
+import akka.cluster.pubsub.DistributedPubSubMediator;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import br.com.diegosilva.grpc.Main;
@@ -12,15 +14,21 @@ import java.io.Serializable;
 
 public class AutenticacaoActor extends AbstractActor {
 
-    private final LoggingAdapter LOG = Logging.getLogger(getContext().system(), this);
+    private final LoggingAdapter log = Logging.getLogger(getContext().system(), this);
     private Jedis jedis;
-    private ActorRef singleton;
+    private ActorRef mediator;
+
+
+    public AutenticacaoActor(){
+        super();
+        log.info("Construtor de AutenticacaoActor");
+        mediator =  DistributedPubSub.get(getContext().system()).mediator();
+    }
 
     @Override
     public void preStart() throws Exception {
         super.preStart();
         jedis = new Jedis();
-        singleton = SingletonActor.getActorRef(getContext().system());
     }
 
     @Override
@@ -47,10 +55,11 @@ public class AutenticacaoActor extends AbstractActor {
             sender().tell(response.build(), getSelf());
         } else {//retorna sucesso e adiciona o usuario
             jedis.sadd("usuarios", login.nome);
-            jedis.publish("usuario_entrou", Usuario.newBuilder().setOp(Main.OperacoesUsuario.INCLUSAO)
-                                            .setNome(login.nome).build().toByteString().toStringUtf8());
 
-            //singleton.tell(new SingletonActor.Adicionar(), getSelf());
+            log.info("Enviando mensagem para o mediator");
+            mediator.tell(new DistributedPubSubMediator.Publish("usuario_entrou", Usuario.newBuilder().setOp(Main.OperacoesUsuario.INCLUSAO)
+                            .setNome(login.nome).build()),
+                    getSelf());
 
             response.setCodigo(0);
             response.setMessage("Usuário autenticado");
@@ -60,8 +69,9 @@ public class AutenticacaoActor extends AbstractActor {
 
     private void realizarLogoff(Logoff logoff){
         jedis.srem("usuarios", logoff.nome);
-        jedis.publish("usuario_entrou", Usuario.newBuilder().setOp(Main.OperacoesUsuario.EXCLUCAO)
-                .setNome(logoff.nome).build().toByteString().toStringUtf8());
+        mediator.tell(new DistributedPubSubMediator.Publish("usuario_entrou", Usuario.newBuilder().setOp(Main.OperacoesUsuario.EXCLUCAO)
+                        .setNome(logoff.nome).build()),
+                getSelf());
     }
 
     public static class Login implements Serializable {

@@ -6,8 +6,6 @@ import akka.actor.Props;
 import akka.cluster.singleton.ClusterSingletonManager;
 import akka.cluster.singleton.ClusterSingletonManagerSettings;
 import br.com.diegosilva.grpc.actors.AutenticacaoActor;
-import br.com.diegosilva.grpc.actors.SingletonActor;
-import br.com.diegosilva.grpc.hello.Usuario;
 import br.com.diegosilva.grpc.services.AutenticacaoServiceImpl;
 import br.com.diegosilva.grpc.services.UsuarioServiceImpl;
 import com.typesafe.config.Config;
@@ -30,23 +28,17 @@ public class Main {
     }
 
     private Server server;
-    private static final int port = 50051;
+    private static int port = 50051;
 
     private void start() throws IOException {
 
         Config config = ConfigFactory.load();
+        ActorSystem system = ActorSystem.create("grpc-server", config);
 
-        ActorSystem system = ActorSystem.create("ClusterSystem", config);
-
-
-        ClusterSingletonManagerSettings settings =
-                ClusterSingletonManagerSettings.create(system).withRole("compute");
-
-        system.actorOf(
-                ClusterSingletonManager.props(
-                        Props.create(SingletonActor.class),
-                        PoisonPill.getInstance(),
-                        settings),"master");
+        String portParam = System.getenv("GRPC_PORT");
+        if(portParam != null && !"".equals(portParam)){
+            port = Integer.parseInt(portParam);
+        }
 
         server = ServerBuilder.forPort(port)
                 .addService(new AutenticacaoServiceImpl(system, AutenticacaoActor.getActorRef(system)))
@@ -62,6 +54,17 @@ public class Main {
             System.err.println("*** Servidor desligado");
         }));
     }
+
+//    private void iniciarSingletonCluster(ActorSystem system){
+//        ClusterSingletonManagerSettings settings =
+//                ClusterSingletonManagerSettings.create(system).withRole("compute");
+//
+//        system.actorOf(
+//                ClusterSingletonManager.props(
+//                        Props.create(SingletonActor.class),
+//                        PoisonPill.getInstance(),
+//                        settings),"master");
+//    }
 
     private void stop() {
         if (server != null) {
