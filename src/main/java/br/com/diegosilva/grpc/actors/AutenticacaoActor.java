@@ -3,32 +3,23 @@ package br.com.diegosilva.grpc.actors;
 import akka.actor.*;
 import akka.cluster.pubsub.DistributedPubSub;
 import akka.cluster.pubsub.DistributedPubSubMediator;
-import akka.event.Logging;
-import akka.event.LoggingAdapter;
 import br.com.diegosilva.grpc.Main;
 import br.com.diegosilva.grpc.hello.AutenticacaoResponse;
 import br.com.diegosilva.grpc.hello.Usuario;
-import redis.clients.jedis.Jedis;
 
 import java.io.Serializable;
 
-public class AutenticacaoActor extends AbstractActor {
+public class AutenticacaoActor extends AbstractLoggingActor {
 
-    private final LoggingAdapter log = Logging.getLogger(getContext().system(), this);
     private ActorRef mediator;
     private ActorRef usuariosActor;
     private ActorRef replyTo;
 
     public AutenticacaoActor(){
         super();
-        log.info("Construtor de AutenticacaoActor");
+        log().info("Construtor de AutenticacaoActor");
         mediator =  DistributedPubSub.get(getContext().system()).mediator();
         usuariosActor = getContext().getSystem().actorOf(Props.create(UsuariosActor.class));
-    }
-
-    @Override
-    public void preStart() throws Exception {
-        super.preStart();
     }
 
     @Override
@@ -42,7 +33,7 @@ public class AutenticacaoActor extends AbstractActor {
     }
 
     private void usuarioNaoExiste(UsuarioNaoExiste usuarioNaoExiste) {
-        log.info("Usuario não existe, Enviando mensagem para o mediator");
+        log().info("Usuario não existe, Enviando mensagem para o mediator");
         AutenticacaoResponse.Builder response = AutenticacaoResponse.newBuilder();
 
         Usuario usuario = Usuario.newBuilder().setOp(Main.OperacoesUsuario.INCLUSAO)
@@ -67,11 +58,11 @@ public class AutenticacaoActor extends AbstractActor {
     @Override
     public void postStop() throws Exception {
         super.postStop();
-        log.info("Parando o Ator");
+        log().info("Parando o Ator");
     }
 
     private void realizarLogin(Login login) {
-        log.info("Realizando login, vai enviar mensagem para verificar se o usuario existe");
+        log().info("Realizando login, vai enviar mensagem para verificar se o usuario existe");
         replyTo = getSender();
         usuariosActor.tell(new UsuariosActor.UsuarioExiste(login.nome), getSelf());
     }

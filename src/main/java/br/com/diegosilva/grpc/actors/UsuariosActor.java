@@ -1,12 +1,9 @@
 package br.com.diegosilva.grpc.actors;
 
-import akka.actor.AbstractActor;
 
 import akka.actor.*;
 import akka.cluster.Cluster;
 import akka.cluster.ddata.*;
-import akka.event.Logging;
-import akka.event.LoggingAdapter;
 import br.com.diegosilva.grpc.hello.Usuario;
 import scala.concurrent.duration.Duration;
 
@@ -16,7 +13,6 @@ import akka.cluster.ddata.Replicator.GetSuccess;
 import akka.cluster.ddata.Replicator.ReadConsistency;
 import akka.cluster.ddata.Replicator.ReadMajority;
 import akka.cluster.ddata.Replicator.Update;
-import akka.cluster.ddata.Replicator.Changed;
 import akka.cluster.ddata.Replicator.WriteConsistency;
 import akka.cluster.ddata.Replicator.WriteMajority;
 
@@ -26,9 +22,7 @@ import java.util.Optional;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 
-public class UsuariosActor extends AbstractActor {
-
-    private LoggingAdapter log = Logging.getLogger(getContext().system(), this);
+public class UsuariosActor extends AbstractLoggingActor {
 
     private final Cluster node = Cluster.get(context().system());
     private final ActorRef replicator = DistributedData.get(context().system()).replicator();
@@ -54,8 +48,8 @@ public class UsuariosActor extends AbstractActor {
                 .match(GetFailure.class, this::isResponseToGetUsuarios, this::receiveGetFailure)
                 .match(Replicator.NotFound.class, this::isResponseToGetUsuarios, this::receiveNotFound)
                 .match(Replicator.UpdateResponse.class, updateResponse -> {
-                    log.info("Atualizacao de update");
-                    log.info(updateResponse.toString());
+                    log().info("Atualizacao de update");
+                    log().info(updateResponse.toString());
                     self().tell(new ListarUsuarios(""), self());
                 })
 
@@ -63,7 +57,7 @@ public class UsuariosActor extends AbstractActor {
     }
 
     private void isUsuarioExiste(UsuarioExiste usuarioExiste){
-        log.info("Enviando mensagem para replicator, verificar se o usuario existe");
+        log().info("Enviando mensagem para replicator, verificar se o usuario existe");
         lastReceive = usuarioExiste;
         Optional<Object> ctx = Optional.of(sender());
         replicator.tell(new Replicator.Get<>(dataKey, readMajority, ctx), getSelf());
@@ -71,7 +65,7 @@ public class UsuariosActor extends AbstractActor {
 
     private void adicionarUsuario(AdicionarUsuario msg){
 
-        log.info("Adicionando o usuario {}", msg);
+        log().info("Adicionando o usuario {}", msg);
 
         Replicator.Update<ORSet<String>> update = new Update<>(
                 dataKey,
@@ -103,10 +97,10 @@ public class UsuariosActor extends AbstractActor {
     }
 
     private void receiveGetSuccess(Replicator.GetSuccess<ORSet<String>> g) {
-        log.info("Valores no banco de dados: {}", g.dataValue().getElements());
+        log().info("Valores no banco de dados: {}", g.dataValue().getElements());
         ActorRef replyTo = (ActorRef) g.getRequest().get();
         if(lastReceive instanceof UsuarioExiste){
-            log.info("Verificando se o usuario existe");
+            log().info("Verificando se o usuario existe");
             UsuarioExiste usuarioExiste = ((UsuarioExiste)lastReceive);
             lastReceive = null;
             if(g.dataValue().getElements().contains(usuarioExiste.nomeUsuario)){
@@ -120,15 +114,15 @@ public class UsuariosActor extends AbstractActor {
     }
 
     private void receiveGetFailure(Replicator.GetFailure<ORSet<String>> f) {
-        log.info("Erro ao obter a listagem");
+        log().info("Erro ao obter a listagem");
         Optional<Object> ctx = Optional.of(sender());
         replicator.tell(new Replicator.Get<>(dataKey, readMajority, ctx), self());
     }
 
     private void receiveNotFound(Replicator.NotFound<ORSet<String>> values){
-        log.info("Nenhum usuario cadastrado");
+        log().info("Nenhum usuario cadastrado");
         if(lastReceive instanceof UsuarioExiste){
-            log.info("Enviando mensagem informando que o usuario nao está cadastrado");
+            log().info("Enviando mensagem informando que o usuario nao está cadastrado");
             UsuarioExiste usuarioExiste = ((UsuarioExiste)lastReceive);
             lastReceive = null;
             ActorRef replyTo = (ActorRef) values.getRequest().get();

@@ -29,10 +29,8 @@ public class AutenticacaoServiceImpl
     @Override
     public void autenticar(AutenticacaoRequest request,
                            StreamObserver<AutenticacaoResponse> responseObserver) {
-
         ask(authActor, new AutenticacaoActor.Login(request.getUsuario()),
                 new Timeout(Duration.create(5, TimeUnit.SECONDS))).thenApplyAsync(o -> {
-
                     logger.info("Retorno do servico: "+o);
             responseObserver.onNext((AutenticacaoResponse)o);
             responseObserver.onCompleted();
