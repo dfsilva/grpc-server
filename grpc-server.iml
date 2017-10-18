@@ -25,6 +25,13 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.api.grpc:proto-google-common-protos:0.1.16" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.grpc:grpc-netty:1.6.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.grpc:grpc-stub:1.6.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.typesafe.akka:akka-cluster-metrics_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.typesafe.akka:akka-cluster-tools_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.typesafe.akka:akka-distributed-data_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.typesafe.akka:akka-cluster_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.typesafe.akka:akka-remote_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.typesafe.akka:akka-stream_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.typesafe.akka:akka-actor_2.12:2.5.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.reactivex.rxjava2:rxjava:2.1.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.protobuf:protobuf-java-util:3.3.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.protobuf:protobuf-java:3.3.1" level="project" />
@@ -36,7 +43,17 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.instrumentation:instrumentation-api:0.4.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.opencensus:opencensus-api:0.5.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.guava:guava:19.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.reactivestreams:reactive-streams:1.0.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.scala-lang.modules:scala-java8-compat_2.12:0.8.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.typesafe.akka:akka-protobuf_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.typesafe:ssl-config-core_2.12:0.2.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.scala-lang.modules:scala-parser-combinators_2.12:1.0.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.scala-lang:scala-library:2.12.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.typesafe:config:1.3.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty:3.10.6.Final" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.aeron:aeron-driver:1.2.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: io.aeron:aeron-client:1.2.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.lmdbjava:lmdbjava:0.0.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.reactivestreams:reactive-streams:1.0.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.grpc:grpc-context:1.6.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.19" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.findbugs:jsr305:3.0.0" level="project" />
@@ -46,13 +63,31 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-codec:4.1.14.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-transport:4.1.14.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.gson:gson:2.7" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.agrona:agrona:0.9.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.jnr:jnr-ffi:2.1.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.jnr:jnr-constants:0.9.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-buffer:4.1.14.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-resolver:4.1.14.Final" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.jnr:jffi:1.2.14" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.jnr:jffi:1.2.14:native" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.ow2.asm:asm-commons:5.0.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.ow2.asm:asm-analysis:5.0.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.ow2.asm:asm-util:5.0.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.ow2.asm:asm-tree:5.0.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.ow2.asm:asm:5.0.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.github.jnr:jnr-x86asm:1.0.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: io.netty:netty-common:4.1.14.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.grpc:grpc-protobuf:1.6.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.api.grpc:proto-google-common-protos:0.1.16" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.grpc:grpc-netty:1.6.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.grpc:grpc-stub:1.6.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.typesafe.akka:akka-cluster-metrics_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.typesafe.akka:akka-cluster-tools_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.typesafe.akka:akka-distributed-data_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.typesafe.akka:akka-cluster_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.typesafe.akka:akka-remote_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.typesafe.akka:akka-stream_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.typesafe.akka:akka-actor_2.12:2.5.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.reactivex.rxjava2:rxjava:2.1.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.protobuf:protobuf-java-util:3.3.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.protobuf:protobuf-java:3.3.1" level="project" />
@@ -64,7 +99,17 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.instrumentation:instrumentation-api:0.4.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.opencensus:opencensus-api:0.5.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.guava:guava:19.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.reactivestreams:reactive-streams:1.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.scala-lang.modules:scala-java8-compat_2.12:0.8.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.typesafe.akka:akka-protobuf_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.typesafe:ssl-config-core_2.12:0.2.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.scala-lang.modules:scala-parser-combinators_2.12:1.0.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.scala-lang:scala-library:2.12.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.typesafe:config:1.3.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty:3.10.6.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.aeron:aeron-driver:1.2.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.aeron:aeron-client:1.2.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.lmdbjava:lmdbjava:0.0.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.reactivestreams:reactive-streams:1.0.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.grpc:grpc-context:1.6.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.errorprone:error_prone_annotations:2.0.19" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.code.findbugs:jsr305:3.0.0" level="project" />
@@ -74,14 +119,32 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-codec:4.1.14.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-transport:4.1.14.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.code.gson:gson:2.7" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.agrona:agrona:0.9.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.jnr:jnr-ffi:2.1.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.jnr:jnr-constants:0.9.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-buffer:4.1.14.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-resolver:4.1.14.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.jnr:jffi:1.2.14" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.jnr:jffi:1.2.14:native" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.ow2.asm:asm-commons:5.0.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.ow2.asm:asm-analysis:5.0.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.ow2.asm:asm-util:5.0.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.ow2.asm:asm-tree:5.0.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.ow2.asm:asm:5.0.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.jnr:jnr-x86asm:1.0.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.netty:netty-common:4.1.14.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.grpc:grpc-protobuf:1.6.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.api.grpc:proto-google-common-protos:0.1.16" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.grpc:grpc-netty:1.6.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.grpc:grpc-testing:1.6.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.grpc:grpc-stub:1.6.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.typesafe.akka:akka-cluster-metrics_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.typesafe.akka:akka-cluster-tools_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.typesafe.akka:akka-distributed-data_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.typesafe.akka:akka-cluster_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.typesafe.akka:akka-remote_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.typesafe.akka:akka-stream_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.typesafe.akka:akka-actor_2.12:2.5.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.reactivex.rxjava2:rxjava:2.1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.truth:truth:0.28" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12" level="project" />
@@ -96,7 +159,17 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.instrumentation:instrumentation-api:0.4.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.opencensus:opencensus-api:0.5.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:guava:19.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.reactivestreams:reactive-streams:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.scala-lang.modules:scala-java8-compat_2.12:0.8.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.typesafe.akka:akka-protobuf_2.12:2.5.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.typesafe:ssl-config-core_2.12:0.2.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.scala-lang.modules:scala-parser-combinators_2.12:1.0.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.scala-lang:scala-library:2.12.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.typesafe:config:1.3.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty:3.10.6.Final" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: io.aeron:aeron-driver:1.2.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: io.aeron:aeron-client:1.2.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.lmdbjava:lmdbjava:0.0.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.reactivestreams:reactive-streams:1.0.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.objenesis:objenesis:1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.grpc:grpc-context:1.6.1" level="project" />
@@ -108,8 +181,19 @@
     <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-codec:4.1.14.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-transport:4.1.14.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.code.gson:gson:2.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.agrona:agrona:0.9.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.github.jnr:jnr-ffi:2.1.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.github.jnr:jnr-constants:0.9.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-buffer:4.1.14.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-resolver:4.1.14.Final" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.github.jnr:jffi:1.2.14" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.github.jnr:jffi:1.2.14:native" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm-commons:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm-analysis:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm-util:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm-tree:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.github.jnr:jnr-x86asm:1.0.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.netty:netty-common:4.1.14.Final" level="project" />
   </component>
 </module>

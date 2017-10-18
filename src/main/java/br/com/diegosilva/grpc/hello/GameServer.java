@@ -1,6 +1,11 @@
 
 package br.com.diegosilva.grpc.hello;
 
+import akka.actor.ActorSystem;
+import br.com.diegosilva.grpc.hello.services.AutenticacaoImpl;
+import br.com.diegosilva.grpc.hello.services.UsuarioServiceImpl;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
@@ -28,12 +33,19 @@ public class GameServer {
 
   private Server server;
 
-  private static List<String> usuariosAutenticados = new ArrayList<>();
-  private static PublishSubject<Usuario> usuariosAutenticadosPublisher
-          = PublishSubject.create();
-  private static final int port  = 50051;
+  private static int port  = 50051;
 
   private void start() throws IOException {
+
+    Config config = ConfigFactory.load();
+    ActorSystem system = ActorSystem
+            .create("grpc-server", config);
+
+    String portParam = System.getenv("GRPC_PORT");
+
+    if(portParam != null && !"".equals(portParam)){
+      port = Integer.parseInt(portParam);
+    }
 
     server = ServerBuilder.forPort(port)
             .addService(new AutenticacaoImpl())
@@ -67,77 +79,5 @@ public class GameServer {
     final GameServer server = new GameServer();
     server.start();
     server.blockUntilShutdown();
-  }
-
-
-  static class AutenticacaoImpl
-          extends AutenticacaoGrpc.AutenticacaoImplBase {
-
-    @Override
-    public void autenticar(AutenticacaoRequest request,
-                           StreamObserver<AutenticacaoResponse> responseObserver) {
-
-      AutenticacaoResponse.Builder response = AutenticacaoResponse.newBuilder();
-
-      if(usuariosAutenticados.contains(request.getUsuario())){
-        //retorna erro, usuario já autenticado
-        response.setCodigo(-1);
-        response.setMessage("Já existe um usuário autenticado com este login");
-      }else{//retorna sucesso e adiciona o usuario
-        usuariosAutenticados.add(request.getUsuario());
-
-
-        usuariosAutenticadosPublisher
-                .onNext(Usuario.newBuilder().setOp(OperacoesUsuario.INCLUSAO)
-                .setNome(request.getUsuario()).build());
-
-        response.setCodigo(0);
-        response.setMessage("Usuário autenticado");
-      }
-
-      responseObserver.onNext(response.build());
-      responseObserver.onCompleted();
-
-    }
-  }
-
-
-  static class UsuarioServiceImpl extends UsuariosGrpc.UsuariosImplBase{
-
-    @Override
-    public void listarUsuarios(Usuario request, StreamObserver<Usuario> responseObserver) {
-
-      Observable.fromIterable(usuariosAutenticados)
-              .filter(new Predicate<String>() {
-        @Override
-        public boolean test(String s) throws Exception {
-          return !s.equals(request.getNome());
-        }
-      }).concatMap(new Function<String, ObservableSource<String>>() {
-        @Override
-        public ObservableSource<String> apply(String s) throws Exception {
-          return Observable.just(s).delay(1, TimeUnit.SECONDS);
-        }
-      }).subscribe(new Consumer<String>() {
-        @Override
-        public void accept(String s) throws Exception {
-          responseObserver.onNext(Usuario.newBuilder().setNome(s).build());
-        }
-      });
-
-      usuariosAutenticadosPublisher.subscribe(new Consumer<Usuario>() {
-        @Override
-        public void accept(Usuario usuario) throws Exception {
-          responseObserver.onNext(usuario);
-        }
-      });
-    }
-
-    @Override
-    public void sair(SairRequest request, StreamObserver<SairResponse> responseObserver) {
-      usuariosAutenticados.remove(request.getNome());
-      usuariosAutenticadosPublisher.onNext(Usuario.newBuilder().setOp(OperacoesUsuario.EXCLUCAO)
-              .setNome(request.getNome()).build());
-    }
   }
 }
