@@ -1,10 +1,25 @@
 package br.com.diegosilva.grpc.hello.services;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
 import br.com.diegosilva.grpc.hello.*;
 import io.grpc.stub.StreamObserver;
 
+import java.util.logging.Logger;
+
 public class AutenticacaoImpl
         extends AutenticacaoGrpc.AutenticacaoImplBase {
+
+    private ActorSystem system;
+    private ActorRef authActor;
+    private static final Logger logger = Logger.getLogger(AutenticacaoImpl.class.getName());
+
+    public AutenticacaoImpl(ActorSystem system, ActorRef actorRef){
+        super();
+        this.system = system;
+        this.authActor = actorRef;
+    }
+
 
     @Override
     public void autenticar(AutenticacaoRequest request,
