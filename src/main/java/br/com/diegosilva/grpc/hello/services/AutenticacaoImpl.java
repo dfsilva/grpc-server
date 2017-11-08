@@ -2,9 +2,16 @@ package br.com.diegosilva.grpc.hello.services;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.util.Timeout;
 import br.com.diegosilva.grpc.hello.*;
+import br.com.diegosilva.grpc.hello.actors.AutenticacaoActor;
 import io.grpc.stub.StreamObserver;
+import akka.actor.*;
+import scala.concurrent.duration.Duration;
 
+import static akka.pattern.PatternsCS.ask;
+
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class AutenticacaoImpl
@@ -24,27 +31,13 @@ public class AutenticacaoImpl
     @Override
     public void autenticar(AutenticacaoRequest request,
                            StreamObserver<AutenticacaoResponse> responseObserver) {
+        ask(authActor, new AutenticacaoActor.Login(request.getUsuario()),
+                new Timeout(Duration.create(5, TimeUnit.SECONDS)))
+                .thenApplyAsync(resposta -> {
+                    responseObserver.onNext((AutenticacaoResponse) resposta);
+                    responseObserver.onCompleted();
 
-        AutenticacaoResponse.Builder response = AutenticacaoResponse.newBuilder();
-
-//        if(usuariosAutenticados.contains(request.getUsuario())){
-//            //retorna erro, usuario já autenticado
-//            response.setCodigo(-1);
-//            response.setMessage("Já existe um usuário autenticado com este login");
-//        }else{//retorna sucesso e adiciona o usuario
-//            usuariosAutenticados.add(request.getUsuario());
-//
-//
-//            usuariosAutenticadosPublisher
-//                    .onNext(Usuario.newBuilder().setOp(GameServer.OperacoesUsuario.INCLUSAO)
-//                            .setNome(request.getUsuario()).build());
-//
-//            response.setCodigo(0);
-//            response.setMessage("Usuário autenticado");
-//        }
-
-        responseObserver.onNext(response.build());
-        responseObserver.onCompleted();
-
+                    return resposta;
+                });
     }
 }

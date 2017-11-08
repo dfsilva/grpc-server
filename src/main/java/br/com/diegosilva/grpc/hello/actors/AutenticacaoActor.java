@@ -2,6 +2,10 @@ package br.com.diegosilva.grpc.hello.actors;
 
 import akka.actor.*;
 import akka.cluster.pubsub.DistributedPubSub;
+import akka.cluster.pubsub.DistributedPubSubMediator;
+import br.com.diegosilva.grpc.hello.AutenticacaoResponse;
+import br.com.diegosilva.grpc.hello.GameServer;
+import br.com.diegosilva.grpc.hello.Usuario;
 
 import java.io.Serializable;
 
@@ -30,7 +34,9 @@ public class AutenticacaoActor extends AbstractLoggingActor {
     }
 
     private void realizarLogin(Login mensagem){
-
+        log().info("Realizando login, vai enviar mensagem para verificar se o usuario existe");
+        responderPara = getSender();
+        usuariosActor.tell(new UsuariosActor.UsuarioExiste(mensagem.nome), getSelf());
     }
 
     private void realizarLogoff(Logoff mensagem){
@@ -38,10 +44,25 @@ public class AutenticacaoActor extends AbstractLoggingActor {
     }
 
     public void tratarUsuarioExistente(UsuarioJaExiste mensagem){
-
+        AutenticacaoResponse.Builder response = AutenticacaoResponse.newBuilder();
+        response.setCodigo(-1);
+        response.setMessage("Já existe um usuário autenticado com este login");
+        responderPara.tell(response.build(), getSelf());
     }
 
     public void tratarUsuarioInexistente(UsuarioNaoExiste mensagem){
+        log().info("Usuario não existe, Enviando mensagem para o mediador");
+        AutenticacaoResponse.Builder response = AutenticacaoResponse.newBuilder();
+        Usuario usuario = Usuario.newBuilder().setOp(GameServer.OperacoesUsuario.INCLUSAO)
+                .setNome(mensagem.nome).build();
+        pubSubMediator.tell(new DistributedPubSubMediator
+                .Publish("usuario_entrou", usuario), getSelf());
+        usuariosActor.tell(new UsuariosActor.AdicionarUsuario(usuario), getSelf());
+
+        response.setCodigo(0);
+        response.setMessage("Usuario autenticado");
+
+        responderPara.tell(response.build(), getSelf());
 
     }
 

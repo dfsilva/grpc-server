@@ -2,6 +2,7 @@
 package br.com.diegosilva.grpc.hello;
 
 import akka.actor.ActorSystem;
+import br.com.diegosilva.grpc.hello.actors.AutenticacaoActor;
 import br.com.diegosilva.grpc.hello.services.AutenticacaoImpl;
 import br.com.diegosilva.grpc.hello.services.UsuarioServiceImpl;
 import com.typesafe.config.Config;
@@ -26,7 +27,7 @@ public class GameServer {
 
   private static final Logger logger = Logger.getLogger(GameServer.class.getName());
 
-  private static class OperacoesUsuario{
+  public static class OperacoesUsuario{
     public static final int INCLUSAO = 0;
     public static final int EXCLUCAO = 1;
   }
@@ -48,7 +49,7 @@ public class GameServer {
     }
 
     server = ServerBuilder.forPort(port)
-            .addService(new AutenticacaoImpl())
+            .addService(new AutenticacaoImpl(system, AutenticacaoActor.getActorRef(system)))
             .addService(new UsuarioServiceImpl())
         .build()
         .start();
